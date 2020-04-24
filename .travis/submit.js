@@ -13,7 +13,7 @@ exec(
 
     const options = {
       hostname: URCLASS_URL,
-      path: `/Prod/submit/`,
+      path: `/production/submit/sprint`,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
