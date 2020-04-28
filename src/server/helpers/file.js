@@ -3,11 +3,11 @@ const fs = require("fs");
 async function writeFile(filename, body) {
   return new Promise((resolve, reject) => {
     // TODO: 특정 파일이름(filename)을 가진 텍스트를 저장할 수 있도록 구현하세요.
-    try {
-      resolve(fs.writeFile(filename, body));
-    } catch (err) {
-      reject(err);
-    }
+    fs.writeFile(filename, body, "utf8", (err) => {
+      if (err) reject(err);
+      // eslint-disable-next-line no-console
+      resolve(body);
+    });
   });
 }
 
@@ -22,7 +22,8 @@ async function readFile(filename) {
       if (err) {
         reject(err);
       }
-      resolve(data);
+      // eslint-disable-next-line no-console
+      resolve(data.toString("utf-8"));
     });
   });
 }
@@ -36,10 +37,13 @@ async function writeSourceListFile(body) {
 }
 
 async function readLineFromSourceList(nthline) {
-  return new Promise((resolve, reject) => {
+  return await new Promise((resolve, reject) => {
     // TODO : ./data/source.txt에 저장되어 있는 텍스트에서 특정 줄에 해당하는 텍스트를 읽을 수 있도록 구현하세요.
-    let test = await readSourceListFile();
-    test.then(data => data.split("\n")).then(d => d[nthline])
+    let test = readSourceListFile();
+    test
+      .then((data) => data.split("\n"))
+      .then((d) => resolve(d[nthline]))
+      .catch((err) => reject(err));
   });
 }
 
