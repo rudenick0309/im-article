@@ -13,12 +13,15 @@ router.get("/:line", async (req, res) => {
   const filename = `./data/${req.params.line}.txt`;
   res.set("Content-Type", "application/json");
 
+  console.log("파일네임", filename);
   // TODO : Help function을 이용하여, 주어진 filename의 내용을 읽을 수 있도록 구현하세요.
   /*
    * fs.existsSync 를 이용하여, 존재하지 않는 파일에 대해서 에러 핸들링을 할 수 있어야 합니다.
    */
   if (fs.existsSync(filename))
-    res.status(200).send(fileHelper.readFile(filename));
+    fileHelper
+      .readFile(filename)
+      .then((data) => res.send(JSON.stringify(data)));
   else res.status(404).send();
 });
 
@@ -33,10 +36,21 @@ router.post("/:line", async (req, res) => {
    * 2) url을 통해, article contents를 얻어낸다. ( JSDOM을 이용하여, medium 블로그의 글 내용을 얻을 수 있도록 하세요.)
    * 3) 얻어낸 article contents를 저장한다. (ex : filename , data/${lineNo}.txt)
    */
-  fileHelper.readLineFromSourceList(lineNo)
-  .then(data => fetchHelper.retrieveArticle(data))
-  .then(a => new JSDOM(a))
-  .then(b => fileHelper.writeFile(`data/${lineNo}.txt`,b))
+  fileHelper
+    .readLineFromSourceList(lineNo)
+    .then((data) => fetchHelper.retrieveArticle(data))
+    .then((a) => {
+      let articleDom = new JSDOM(a);
+      let article = articleDom.window.document.querySelector("article")
+        .textContent;
+      console.log("아티클", article);
+
+      return article;
+    })
+    .then((b) => fileHelper.writeFile(`data/${lineNo}.txt`, b));
 });
+
+// const dom = new JSDOM(`<!DOCTYPE html><p>Hello world</p>`);
+// console.log(dom.window.document.querySelector("p").textContent); // "Hello world"
 
 module.exports = router;
