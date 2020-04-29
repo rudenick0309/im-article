@@ -36,12 +36,12 @@ button {
 }
 
 button:disabled {
-  opacity: .3;
+  opacity: 0.3;
 }
 
 #modal {
   position: absolute;
-  background-color: rgba(0,0,0,.3);
+  background-color: rgba(0, 0, 0, 0.3);
   top: 0;
   left: 0;
   right: 0;
@@ -67,4 +67,8 @@ button:disabled {
   border: 1px solid silver;
   border-radius: 5px;
   background-color: #f0f0f0;
+}
+img {
+  width: 500px;
+  height: auto;
 }
