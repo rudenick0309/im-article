@@ -1,18 +1,18 @@
-const https = require("https");
+const https = require('https');
 
 async function retrieveArticle(url) {
   // TODO: retrieve the html string from given url and return as promise
   return new Promise((resolve, reject) => {
     https.get(url, (res) => {
-      let body = "";
+      let body = '';
       res
-        .on("data", (chunk) => {
+        .on('data', (chunk) => {
           body += chunk.toString();
         })
-        .on("end", () => {
+        .on('end', () => {
           resolve(body);
         })
-        .on("error", (e) => reject(e));
+        .on('error', (e) => reject(e));
     });
   });
 }
