@@ -53,23 +53,6 @@ router.post('/:line', async (req, res) => {
    * 2) url을 통해, article contents를 얻어낸다. ( JSDOM을 이용하여, medium 블로그의 글 내용을 얻을 수 있도록 하세요.)
    * 3) 얻어낸 article contents를 저장한다. (ex : filename , data/${lineNo}.txt)
    */
-<<<<<<< HEAD
-
-  fileHelper
-    .readLineFromSourceList(lineNo)
-    .then((data) => fetchHelper.retrieveArticle(data))
-    .then((a) => {
-      let dom = new JSDOM(a).window.document.querySelector("article")
-        .textContent;
-      return dom;
-    })
-    .then((b) => {
-      console.log("bbbb", b);
-      fileHelper.writeFile(`data/${lineNo}.txt`, b);
-    })
-    .then(() => res.send("ok"))
-    .catch((e) => res.status(500).send(e));
-=======
   fileHelper
     .readLineFromSourceList(lineNo) //1입력
     .then((data) => {
@@ -91,7 +74,6 @@ router.post('/:line', async (req, res) => {
       console.log(e, `lineno, ${lineNo}\n `);
       res.status(500).send();
     });
->>>>>>> 8837d305a4053458f9180a974abb8855f9c0aa83
 });
 
 // const dom = new JSDOM(`<!DOCTYPE html><p>Hello world</p>`);
